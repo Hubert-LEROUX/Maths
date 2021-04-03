@@ -1,0 +1,10 @@
+# 13/10/2020 19h13
+
+Le but est dafficher l'identité (a+b)**n sous sa forme développée
+Il y a deux méthodes pour calculer k parmi n:
+1. La formule
+2. Le triangle de Pascal
+
+
+
+
