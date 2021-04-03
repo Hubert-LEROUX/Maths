@@ -54,4 +54,3 @@ if __name__ == "__main__":
     print(f"PI_ARCHIMEDE = {estimation}\t TIME : {time.time()-t} seconds")
     t = time.time()
     estimation = approximatePiWithNewton()
-    print(f"PI_NEWTON =    {estimation}\t TIME : {time.time()-t} seconds")
