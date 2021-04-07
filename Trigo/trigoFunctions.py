@@ -10,11 +10,20 @@ PI = math.pi
 ZERO = 1e-15
 
 def compare(f1, f2, f1Name, f2Name, X):
+    """
+    Permet de comparer deux fonctions
+    param f1: Première fonciton
+    param f2: Deuxième fonciton
+    param f1Name: Le nom de la première fonction
+    param f2Name: Le nom de la seconde fonction
+    param X: la valeur à calculer
+    """
     for f, name in [(f1, f1Name), (f2, f2Name)]:
         start = time.time()
         print(f"Testing {name} with {X}")
         print(f"\tResult:\t{f(X)}")
         print(f"\tTime:\t{time.time()-start}")
+
 
 
 
@@ -138,7 +147,8 @@ def my_acos(x,precision=0.00000000000001):
             bG = middle
     return bD
 
-def my_asin(x,precision=0.00000000000001):
+
+def my_asin1(x,precision=0.00000000000001):
     assert -1<=x<=1 
     # Renvoie la valeur de l'angle enter -pi/2 et pi/2
     # On sait que le sinus est croissant entre ces valeurs
@@ -153,21 +163,36 @@ def my_asin(x,precision=0.00000000000001):
     return bD
 
 
+def my_asin2(x,precision=40):
+    assert -1<=x<=1 
+    # Renvoie la valeur de l'angle enter -pi/2 et pi/2
+    # On sait que le sinus est croissant entre ces valeurs
+    rep = 0
+    coef = 1    
+    X = x
+    x2 = x**2
+    for n in range(0, precision+1):
+        rep += coef * X
+        coef *= (((2*n+1)**2)*(2*n+2)) / (4*((n+1)**2)*(2*n+3))
+        X*=x2
+    
+    return rep
+
 
 if __name__ == "__main__":
 
     #* Test acos
-    X= PI/6
-    print(X)
-    # print(my_cos1(X))
-    print(my_acos(my_cos1(X)))
-    print()
+    # X= PI/6
+    # print(X)
+    # # print(my_cos1(X))
+    # print(my_acos(my_cos1(X)))
+    # print()
 
     #* Test asin
     X= PI/3
     print(X)
     # print(my_sin1(X))
-    print(my_asin(my_sin1(X)))
+    print(my_asin2(my_sin1(X)))
 
     #* Test cos et sin et tan
     # for X in [pi/4, pi/6, pi/2, pi/3]:
