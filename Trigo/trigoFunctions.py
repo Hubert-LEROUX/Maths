@@ -1,9 +1,12 @@
 """
 Ce code a pour but de calculer l'image de x par les fonctions cos, sin et tan
 """
-from math import sin, cos, tan, pi # On les importent pour la comparaison
+# On les importe pour la comparaison
+import math
+
 import time
 
+PI = math.pi
 ZERO = 1e-15
 
 def compare(f1, f2, f1Name, f2Name, X):
@@ -21,7 +24,7 @@ def my_cos1(x, precision=50):
     """
     Retourne le cos d'un nombre
     """
-    x = x % (2*pi)
+    x = x % (2*PI)
     rep = 0
     inv_coef = 1    
     X = 1
@@ -35,7 +38,7 @@ def my_cos1(x, precision=50):
     return rep
 
 def my_cos2(x, precision=100):
-    x = x % (2*pi)
+    x = x % (2*PI)
     rep = 0
     coef = 1    
     X = 1
@@ -73,7 +76,7 @@ def fastExpo(a,b):
 
 
 def my_cos3(x, precision=50):
-    x = x % (2*pi)
+    x = x % (2*PI)
     rep = 0
     for i in range(0, precision+1):
         if i%2 == 0:
@@ -89,7 +92,7 @@ def my_sin1(x, precision=20):
     Retourne le cos d'un nombre
     20 suffit largement
     """
-    x = x % (2*pi)
+    x = x % (2*PI)
     rep = 0
     inv_coef = 1    
     X = x
@@ -108,7 +111,7 @@ def my_tan(x, precision=20):
     Retourne le cos d'un nombre
     20 suffit largement
     """
-    x = x % (2*pi)
+    x = x % (2*PI)
     s = my_sin1(x)
     c = my_cos1(x)
     if c==0:
@@ -119,12 +122,65 @@ def my_tan(x, precision=20):
     return rep
 
 
+def my_acos(x,precision=0.00000000000001):
+    assert -1<=x<=1 
+    # Renvoie la valeur de l'angle enter 0 et pi
+    # On sait que le cosinus est décroissant entre ces valeurs
+    # On peut donc faire une recherche dichotomique
+    bG = PI
+    bD = 0
+    while bG-bD > precision:
+        middle = (bG+bD)/2
+        # print("COMPUTING")
+        if x < my_cos1(middle): # Si notre x est plus petit que cos(middle)
+            bD = middle
+        else:
+            bG = middle
+    return bD
+
+def my_asin(x,precision=0.00000000000001):
+    assert -1<=x<=1 
+    # Renvoie la valeur de l'angle enter -pi/2 et pi/2
+    # On sait que le sinus est croissant entre ces valeurs
+    bG = -PI/2
+    bD = PI/2
+    while bD-bG > precision:
+        middle = (bG+bD)/2
+        if x < my_sin1(middle): # Si notre x est plus petit que cos(middle)
+            bD = middle
+        else:
+            bG = middle
+    return bD
+
+
+
 if __name__ == "__main__":
-    # print(pi/2)
-    # print(my_cos1())
-    for X in [pi/4, pi/6, pi/2, pi/3]:
-        compare(sin, my_sin1, "SIN DE PYTHON", "MON SIN", X)
-        print()
-    for X in [pi/4, pi/6, pi/2, pi/3]:
-        compare(tan, my_tan, "TAN DE PYTHON", "MON TAN", X)
-        print()
+
+    #* Test acos
+    X= PI/6
+    print(X)
+    # print(my_cos1(X))
+    print(my_acos(my_cos1(X)))
+    print()
+
+    #* Test asin
+    X= PI/3
+    print(X)
+    # print(my_sin1(X))
+    print(my_asin(my_sin1(X)))
+
+    #* Test cos et sin et tan
+    # for X in [pi/4, pi/6, pi/2, pi/3]:
+    #     compare(math.cos, my_cos1, "cos DE PYTHON", "MON cos", X)
+    #     print()
+    # print("\n\n")
+    # for X in [pi/4, pi/6, pi/2, pi/3]:
+    #     compare(math.sin, my_sin1, "SIN DE PYTHON", "MON SIN", X)
+    #     print()
+    # print("\n\n")
+    # for X in [pi/4, pi/6, pi/2, pi/3]:
+    #     compare(math.tan, my_tan, "TAN DE PYTHON", "MON TAN", X)
+    #     print()
+    # print("\n\n")
+
+    
