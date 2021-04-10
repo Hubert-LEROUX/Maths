@@ -1,5 +1,20 @@
+"""
+Ce fichier permet de tester différents arrangements de pizzas.
+Il calcule tous les scores possibles 
+!(Attention comme il s'agit de permutations, la complexité est O(n!))
+
+Les pizzas arrivent en input de la forme
+ - un entier sur une ligne: le nombre de pizzas
+ - n lignes suivent avec pour chaque ligne deux entiers: p (le poids de la pizza) et d (la durée de fabrication)
+# Soit vous les donnez manuellement.
+# Soit vous vous servez de generate pizzas, qui les génèrent pour vous.
+"""
+
+
 import sys
 import itertools
+
+
 
 
 def arrangements(l, result=[]):
@@ -77,12 +92,15 @@ def main():
         elif newScore == bestScore:
             bestArrays.append(list(arr))
 
-    print(f"Best score = {bestScore}")
+
+    print("========================= MEILLEURS SCORES ======================")
+    print(f"\tBest score = {bestScore}")
     for arr in bestArrays:
-        print(arr)
+        print(f"\t{arr}")
 
 
-    print("Ordre des pizzas théorique:")
+    print()
+    print("=== Ordre des pizzas théorique ===")
     pizzas.sort(key = lambda x : x[1]/x[0], reverse=True)
     print(f"Score = {fComputeScore(pizzas)} | Array = {pizzas}") #On trie par ordre décroissant du rapport p/d
 
