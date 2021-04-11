@@ -32,7 +32,11 @@ def arrangements(l, result=[]):
             result.pop()
 
 
-    
+
+def factorial(n):
+    if n <2:
+        return 1
+    return n*factorial(n-1)
 
 def main():
     nbPizzas = int(input())
@@ -78,7 +82,7 @@ def main():
         return score
 
 
-    fComputeScore = computeScoreAlign
+    fComputeScore = computeScoreAlternate
     
     # print(itertools.permutations(pizzas))
     for arr in itertools.permutations(pizzas):
@@ -94,6 +98,8 @@ def main():
 
 
     print("========================= MEILLEURS SCORES ======================")
+    print(f"Nombre de permutations testées:{factorial(nbPizzas)}")
+    print(f"Nombre de permutations meilleures:{len(bestArrays)}")
     print(f"\tBest score = {bestScore}")
     for arr in bestArrays:
         print(f"\t{arr}")
@@ -102,11 +108,9 @@ def main():
     print()
     print("=== Ordre des pizzas théorique ===")
     pizzas.sort(key = lambda x : x[1]/x[0], reverse=True)
-    print(f"Score = {fComputeScore(pizzas)} | Array = {pizzas}") #On trie par ordre décroissant du rapport p/d
-
-
-
-
+    scoreTheo = fComputeScore(pizzas)
+    print(f"Score = {scoreTheo} | Array = {pizzas}") #On trie par ordre décroissant du rapport p/d
+    print(f"Is in the best solution: {scoreTheo == bestScore}")
 
 
 if __name__ =="__main__":
