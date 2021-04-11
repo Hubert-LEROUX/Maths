@@ -12,6 +12,11 @@ for i in range(1,nbPizzas+1):
     #* P=1 et d prend toutes les valeurs des 1 à nbPizzas
     p = 1
     d = i
-    print(d,p) 
 
+    #* Question 3.b
+    d0 = 1
+    d = d0/(4**(nbPizzas-i))
+    p = 1/(4**i)
+
+    print(d,p) 
 

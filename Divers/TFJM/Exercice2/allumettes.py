@@ -65,7 +65,7 @@ if __name__ == '__main__':
     cout = sys.stdout.write
     input = sys.stdin.read 
 
-    for n in range(1,40):
+    for n in range(32,40,2):
         gagne = BaptisteGagneTil(n, list(range(n)))
         # BaptisteGagneTil()
         

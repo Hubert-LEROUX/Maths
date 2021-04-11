@@ -40,7 +40,7 @@ def factorial(n):
 
 def main():
     nbPizzas = int(input())
-    pizzas = [tuple(map(int, input().split())) for _ in range(nbPizzas)] # Tuple d et p
+    pizzas = [tuple(map(float, input().split())) for _ in range(nbPizzas)] # Tuple d et p
 
     bestArrays = None
     bestScore = float("inf")
@@ -82,7 +82,7 @@ def main():
         return score
 
 
-    fComputeScore = computeScoreAlternate
+    fComputeScore = computeScoreAlign
     
     # print(itertools.permutations(pizzas))
     for arr in itertools.permutations(pizzas):
