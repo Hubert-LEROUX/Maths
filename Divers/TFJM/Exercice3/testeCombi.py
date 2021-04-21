@@ -82,6 +82,9 @@ def main():
         return score
 
 
+    #* Cette ligne permet de choisir la manière dont on répartit les pizzas
+    # computeScoreAlign
+    # computeScoreAlternate
     fComputeScore = computeScoreAlign
     
     # print(itertools.permutations(pizzas))
