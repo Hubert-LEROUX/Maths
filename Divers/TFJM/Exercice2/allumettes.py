@@ -2,6 +2,7 @@
 Ce fichier permet de déterminer qui gagne en fonction du nombre d'allumettes
 """
 import sys
+from matplotlib import pyplot as plt
 
 def BaptisteGagneTil(n, allumettes, coup=0):
     """
@@ -13,9 +14,12 @@ def BaptisteGagneTil(n, allumettes, coup=0):
     @param: allumettes liste des indices des allumettes restantes.
     @return: True si Baptiste gagne dans la configuration, False sinon
     """
+    global nbConfigurationsExplorees
+
     # print(allumettes, coup)
     if len(allumettes)==0: # Il ne reste plus d'allumettes
         # print((coup-1)%2==0)
+        nbConfigurationsExplorees+=1
         return (coup-1)%2==0 # Si Baptiste a joué au dernier tour, c'est lui qui a gagné
 
     def enleveLaIemeAllumette(allumettes, i):
@@ -58,6 +62,17 @@ def BaptisteGagneTil(n, allumettes, coup=0):
                 return result
 
     return result
+
+def plotNbConfigurations(x,y):
+    plt.plot(x,y,"r-o")
+    plt.grid()
+    plt.xlabel("Nombre d'allumettes")
+    plt.ylabel("Nombre de configurations explorées")
+
+    plt.title("Evolution du nombre de configurations explorées")
+
+    plt.show()
+
         
         
 
@@ -65,13 +80,21 @@ if __name__ == '__main__':
     cout = sys.stdout.write
     input = sys.stdin.read 
 
-    for n in range(32,40,2):
+    nbConfigurationsExplorees = 0
+    config = []
+
+    for n in range(1,23,1):
+        nbConfigurationsExplorees = 0
         gagne = BaptisteGagneTil(n, list(range(n)))
+        config.append(nbConfigurationsExplorees)
         # BaptisteGagneTil()
         
-        cout(f"Pour n={n}: ")
         if gagne:
-            print("Baptiste (joue en premier) gagne")
+            print(f"Pour n={n} \t Baptiste (joue en premier) gagne \t nb de configurations explorées: {nbConfigurationsExplorees}")
         else:
-            print("Carole (joue en deuxième) gagne")
+            print(f"Pour n={n} \t Carole (joue en deuxième) gagne  \t nb de configurations explorées: {nbConfigurationsExplorees}")
+
+    plotNbConfigurations(list(range(1, len(config)+1)), config)
+
+
 

@@ -65,3 +65,6 @@ if __name__ == '__main__':
     timeComputation("Méthode de la suite de taylor", taylorSerieMethod, X)
     timeComputation("Méthode d'Euler implémentée", eulerMethod, X)
     timeComputation("Méthode d'exponentiation rapide", artithmeticMethodWithExpoRapide, X)
+
+for i in range(1, 50):
+    print(i, taylorSerieMethod(1, i))

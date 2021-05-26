@@ -64,20 +64,18 @@ class Graph():
         self.base = base
         self.r = r
         self.CCs = self.composantesConnexes()
-        self.MAXIMUM = len(self.CCs[0]) # Le maximum de noeuds atteignables est majoré par la taille de la première composante connexe
+        self.MAXIMUM = len(self.CCs[0]) # Le maximum de noeuds atteignables est majore par la taille de la premiere composante connexe
 
   
     def hamCycle(self):  
 
         path = [-1] * self.E # Chemin
-        marqued = [False]*self.E # Noeuds marqués
-        dateDerniereUtilisationRoulette = [None] * len(self.graph[0]) # Récupère la date de la dernière utilisation de chaque roulette
-        path[0] = 0 # On commence à la combinaison initiale
+        marqued = [False]*self.E # Noeuds marques
+        dateDerniereUtilisationRoulette = [None] * len(self.graph[0]) # Recupere la date de la derniere utilisation de chaque roulette
+        path[0] = 0 # On commence a la combinaison initiale
         marqued[0] = True
         pos = 1
 
-  
-        
         afaire = [(pos, path, marqued, dateDerniereUtilisationRoulette)]
 
         while afaire:
@@ -95,7 +93,7 @@ class Graph():
 
             for roulette, neighbor in enumerate(self.graph[path[pos-1]]): # Pour chaque combi accessible
                 if not marqued[neighbor] and (dateDerniereUtilisationRoulette[roulette] is None or (abs(pos-dateDerniereUtilisationRoulette[roulette]) > self.d)):
-                    # Si on est jamais allé dessus et que d nous permet de faire ce mouvemement
+                    # Si on est jamais alle dessus et que d nous permet de faire ce mouvemement
                     path[pos] = neighbor
                     ancinneDate = dateDerniereUtilisationRoulette[roulette]
                     dateDerniereUtilisationRoulette[roulette] = pos
@@ -171,9 +169,34 @@ def combiPossibles(k, nbRoulettes, ordreImportant=False):
         choisirSansOrdre(0,k)
     return combinaisons
 
+
+def chercheSolution(g, afficheSolution):
+    possible, bestPath = g.hamCycle() 
+
+    #*Affichage SOLUTION
+    if afficheSolution:
+        if possible:
+            print("======== SOLUTION COMPLETE ===========")
+        else:
+            print("======== SOLUTION PARTIELLE ===========")
+
+        for node in bestPath:
+            if node==-1:
+                sys.stdout.write("IMPOSSIBLE D'ALLER PLUS LOIN\n")
+                break;
+            chiffres = dec2baseQuelcoque(node, base=g.base)[::-1]
+            combinaison = ":".join([str(chiffres[i])  if i<len(chiffres) else "0" for i in range(g.r)])
+            sys.stdout.write(f"{combinaison} - ")
+        # if possible:
+        #     sys.stdout.write("0|"*(nbRoulettes-1)+"0\n")
+        print("NB NOEUDS ATTEIGNABLES =", g.maxTSP)
+        print("NB NOEUDS =", g.E)
+    print(f"RAPPORT NB NOEUDS ATTEIGNABLES/NB NOEUDS = {(round((g.maxTSP/g.E) * 100))}%\n")
+
+    return round(g.maxTSP/g.E,3) #On retourne le pourcentage de combinaisons qu'on a pu faire
     
 
-def test(nbChiffres, nbRoulettes, d=0, k=1, afficheSolution=False, ordre=False):
+def constructionGraphe(nbChiffres, nbRoulettes, d=0, k=1, ordre=False):
 
     
     modifs = combiPossibles(k, nbRoulettes, ordreImportant=ordre)
@@ -199,34 +222,17 @@ def test(nbChiffres, nbRoulettes, d=0, k=1, afficheSolution=False, ordre=False):
     # CCs = g.composantesConnexes()
     print(f"COMPOSANTES CONNEXES : {len(g.CCs)}")
     for CC in g.CCs:
-        print(f"TAILLE:{len(CC)} | {'-'.join([''.join(map(str,dec2baseQuelcoque(node, nbChiffres))).zfill(nbRoulettes) for node in CC])}")
+        S = set() # Somme des chiffres
+        for node in CC:
+            S.add(sum(dec2baseQuelcoque(node, nbChiffres)))
+
+        # print(f"TAILLE:{len(CC)} | {','.join([''.join(map(str,dec2baseQuelcoque(node, nbChiffres))).zfill(nbRoulettes) for node in CC])}")
         # print(f"TAILLE:{len(CC)}")
+        print(f"TAILLE:{len(CC)} | S = {S}")
 
 
-    # *Trouve les solutions
-    possible, bestPath = g.hamCycle() 
-
-    #*Affichage SOLUTION
-    if afficheSolution:
-        if possible:
-            print("======== SOLUTION COMPLETE ===========")
-        else:
-            print("======== SOLUTION PARTIELLE ===========")
-
-        for node in bestPath:
-            if node==-1:
-                sys.stdout.write("IMPOSSIBLE D'ALLER PLUS LOIN\n")
-                break;
-            chiffres = dec2baseQuelcoque(node, base=nbChiffres)[::-1]
-            combinaison = ":".join([str(chiffres[i])  if i<len(chiffres) else "0" for i in range(nbRoulettes)])
-            sys.stdout.write(f"{combinaison} - ")
-        # if possible:
-        #     sys.stdout.write("0|"*(nbRoulettes-1)+"0\n")
-        print("NB NOEUDS ATTEIGNABLES =", g.maxTSP)
-        print("NB NOEUDS =", nbNodes)
-    print(f"RAPPORT NB NOEUDS ATTEIGNABLES/NB NOEUDS = {(round((g.maxTSP/nbNodes) * 100))}%\n")
-
-    return round(g.maxTSP/nbNodes,3) #On retourne le pourcentage de combinaisons qu'on a pu faire
+    return g
+    
 
 def countNumberOfMultiples(array, m):
     assert m!=0
@@ -237,11 +243,12 @@ def countNumberOfMultiples(array, m):
     return nb
 
 def main():
-    # print("Bienvenue dans ce petit script pour tester des cas de l'exercice 1:")
-    # print("Donnez-moi : r n d k [1 si l'ordre est important pour k, 0 sinon]")
+    print("Bienvenue dans ce petit script pour tester des cas de l'exercice 1:")
+    print("Donnez-moi : r n d k [1 si l'ordre est important pour k, 0 sinon]")
     nbRoulettes, nbChiffres, d, k, boolOrdreImpt = map(int, input().split())
-    print(f"r = {nbRoulettes} | n = {nbChiffres} | d = {d} | k = {k} | ordre important = {bool(boolOrdreImpt)}")
-    test(nbChiffres, nbRoulettes, d, k, False, boolOrdreImpt)
+    print(f"r={nbRoulettes} | n={nbChiffres} | d={d} | k={k} | ordre important={bool(boolOrdreImpt)}")
+    g = constructionGraphe(nbChiffres, nbRoulettes, d, k, boolOrdreImpt)
+    chercheSolution(g, True)
     
 
 if __name__ == '__main__':

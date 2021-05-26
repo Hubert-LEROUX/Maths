@@ -49,8 +49,12 @@ def piApproximationWithGeometry(n=10000):
     return pi_estimation
 
 if __name__ == "__main__":
-    t = time.time()
-    estimation = piApproximationWithGeometry()
-    print(f"PI_ARCHIMEDE = {estimation}\t TIME : {time.time()-t} seconds")
-    t = time.time()
-    estimation = approximatePiWithNewton()
+    # t = time.time()
+    # estimation = piApproximationWithGeometry()
+    # print(f"PI_ARCHIMEDE = {estimation}\t TIME : {time.time()-t} seconds")
+    # t = time.time()
+    # estimation = approximatePiWithNewton()
+    print("Véritable valeur:")
+    print(f"pi=\t{pi}")
+    for n in range(2, 20, 2):
+        print(f"n={n}:\t{approximatePiWithNewton(n)}")
